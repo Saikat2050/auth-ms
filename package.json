@@ -1,0 +1,77 @@
+{
+  "name": "auth-ms",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "author": "Saikat2050",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "postinstall": "husky install",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable",
+    "dev": "yarn build && concurrently --kill-others \" tsc -w --preserveWatchOutput -p tsconfig.json\" \"nodemon --config nodemon.json dist/app.js\"",
+    "clean": "rimraf dist",
+    "build": "yarn clean && tsc -p tsconfig.json",
+    "serve": "node dist/app.js",
+    "test": "mocha --require ts-node/register src/test/**/*test.ts",
+    "prettier:check": "prettier \"{src,test}/**/*.{ts,js}\" --list-different",
+    "prettier:fix": "prettier \"{src,test}/**/*.{ts,js}\" --write",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/node": "^18.16.9",
+    "@types/pg": "^8.10.7",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier:fix"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@sentry/node": "^7.66.0",
+    "@sentry/profiling-node": "^1.2.0",
+    "@types/body-parser": "^1.19.2",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/morgan": "^1.9.5",
+    "ajv": "^8.12.0",
+    "axios": "^1.5.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "concurrently": "^8.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "husky": "^8.0.3",
+    "is-json": "^2.0.1",
+    "jsonwebtoken": "^9.0.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "postgrator": "^5.0.1",
+    "prettier": "^3.0.3",
+    "redis": "^4.6.10",
+    "rimraf": "^5.0.1",
+    "rotating-file-stream": "^3.1.1",
+    "similarity": "^1.2.1",
+    "string-width": "^6.1.0",
+    "typescript-json-schema": "^0.60.0"
+  }
+}

@@ -1,0 +1,169 @@
+[{
+    "source": "types/auths.ts",
+    "basePath": "/v1/auth",
+    "schemas": [
+        {
+            "apiPath": "/v1/auth/register",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "RegisterAPIPayload"
+        },
+        {
+            "apiPath": "/v1/auth/send-otp-hash",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "SendOtpByHashPayload"
+        },
+        {
+            "apiPath": "/v1/auth/verify-otp-by-hash",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "VerifyOtpByHash"
+        },
+        {
+            "apiPath": "/v1/auth/verify-otp-and-reset-password",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "ResetPasswordPayload"
+        },
+        {
+            "apiPath": "/v1/auth/forgot-password",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "ForgetPassword"
+        },
+        {
+            "apiPath": "/v1/auth/change-password",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "ChangePasswordPayload"
+        },
+        {
+            "apiPath": "/v1/auth/sign-in",
+            "method": "POST",
+            "source": "types/auths.ts",
+            "schema": "SignInPayload"
+        }
+    ]
+},
+{
+    "source": "types/roles.ts",
+    "basePath": "/v1/roles",
+    "schemas": [
+        {
+            "apiPath": "/v1/roles/create",
+            "method": "POST",
+            "source": "types/roles.ts",
+            "schema": "CreateRolePayload"
+        },
+        {
+            "apiPath": "/v1/roles/list",
+            "method": "POST",
+            "source": "types/roles.ts",
+            "schema": "ListRolePayload"
+        },
+        {
+            "apiPath": "/v1/roles/update",
+            "method": "POST",
+            "source": "types/roles.ts",
+            "schema": "UpdateRolePayload"
+        },
+        {
+            "apiPath": "/v1/roles/delete",
+            "method": "POST",
+            "source": "types/roles.ts",
+            "schema": "DeleteRolePayload"
+        }
+    ]
+},
+{
+    "source": "types/configs.ts",
+    "basePath": "/v1/configs",
+    "schemas": [
+        {
+            "apiPath": "/v1/configs/create",
+            "method": "POST",
+            "source": "types/configs.ts",
+            "schema": "CreateConfigPayload"
+        },
+        {
+            "apiPath": "/v1/configs/list",
+            "method": "POST",
+            "source": "types/configs.ts",
+            "schema": "ListConfigPayload"
+        },
+        {
+            "apiPath": "/v1/configs/update",
+            "method": "POST",
+            "source": "types/configs.ts",
+            "schema": "UpdateConfigPayload"
+        },
+        {
+            "apiPath": "/v1/configs/delete",
+            "method": "POST",
+            "source": "types/configs.ts",
+            "schema": "DeleteConfigPayload"
+        }
+    ]
+},
+{
+    "source": "types/users.ts",
+    "basePath": "/v1/users",
+    "schemas": [
+        {
+            "apiPath": "/v1/users/create",
+            "method": "POST",
+            "source": "types/users.ts",
+            "schema": "CreateUserApiPayload"
+        },
+        {
+            "apiPath": "/v1/users/list",
+            "method": "POST",
+            "source": "types/users.ts",
+            "schema": "ListUserPayload"
+        },
+        {
+            "apiPath": "/v1/users/update",
+            "method": "POST",
+            "source": "types/users.ts",
+            "schema": "UpdateUserPayload"
+        },
+        {
+            "apiPath": "/v1/users/delete",
+            "method": "POST",
+            "source": "types/users.ts",
+            "schema": "DeleteUserPayload"
+        }
+    ]
+},
+{
+    "source": "types/notification-services.ts",
+    "basePath": "/v1/notification-services",
+    "schemas": [
+        {
+            "apiPath": "/v1/notification-services/create",
+            "method": "POST",
+            "source": "types/notification-services.ts",
+            "schema": "CreateNotificationServiceApiPayload"
+        },
+        {
+            "apiPath": "/v1/notification-services/list",
+            "method": "POST",
+            "source": "types/notification-services.ts",
+            "schema": "ListNotificationServicePayload"
+        },
+        {
+            "apiPath": "/v1/notification-services/update",
+            "method": "POST",
+            "source": "types/notification-services.ts",
+            "schema": "UpdateNotificationServicePayload"
+        },
+        {
+            "apiPath": "/v1/notification-services/delete",
+            "method": "POST",
+            "source": "types/notification-services.ts",
+            "schema": "DeleteNotificationServicePayload"
+        }
+    ]
+}
+]

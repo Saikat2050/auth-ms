@@ -1,0 +1,38 @@
+[
+    {
+		"apiPath": "/v2/auth/refresh-token",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/sign-in",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/verify-otp-by-hash",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/send-otp-hash",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/reset-password",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/verify-otp-and-reset-password",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/forgot-password",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/register",
+		"method": "POST"
+	},
+	{
+		"apiPath": "/v2/auth/change-password",
+		"method": "POST"
+	}
+]

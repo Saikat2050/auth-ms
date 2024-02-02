@@ -1,0 +1,12 @@
+{
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "node_modules/",
+      "/schema/",
+      "/public/"
+    ],
+    "watch": "dist",
+    "delay": 5
+  }
+  

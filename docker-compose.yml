@@ -1,0 +1,8 @@
+version: "2"
+
+services:
+  node:
+    build: .
+    container_name: "auth-ms"
+    ports:
+      - 7022:7022

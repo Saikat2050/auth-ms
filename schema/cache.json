@@ -1,6 +1,6 @@
 {
   "/v1/auth": {
-    "hash": "4bf769ecbf6e0cd44a50992efc661326d5c30bc2",
+    "hash": "b7efda9176d09d015a55d1705e885ea7131bd996",
     "schemas": {
       "/v1/auth/register": {
         "type": "object",
@@ -162,7 +162,7 @@
     }
   },
   "/v1/roles": {
-    "hash": "c76eae5202e5840459896c19033d6f61cad89e35",
+    "hash": "77f7face659e4f339536d77f17c32d8c7a1d7412",
     "schemas": {
       "/v1/roles/create": {
         "anyOf": [
@@ -322,7 +322,7 @@
     }
   },
   "/v1/configs": {
-    "hash": "79dae16b421b01b7157a029ea7b794814d3e8db0",
+    "hash": "41510f64133cfd02aa479599148019facc25cbe5",
     "schemas": {
       "/v1/configs/create": {
         "anyOf": [
@@ -502,7 +502,7 @@
     }
   },
   "/v1/users": {
-    "hash": "a8fca7e33eedfb9384e3088324db6a2dd73c06d8",
+    "hash": "44d4bb5c331dacce7e7a5a14a450a5e0986f06b5",
     "schemas": {
       "/v1/users/create": {
         "anyOf": [
@@ -727,7 +727,7 @@
     }
   },
   "/v1/notification-services": {
-    "hash": "37d32a5a4005ad8e93d6274e7bf65c4e0ed76246",
+    "hash": "019d4e3e434da9b35eb9ecf5e48057f4ce53a28b",
     "schemas": {
       "/v1/notification-services/create": {
         "anyOf": [

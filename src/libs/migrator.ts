@@ -3,14 +3,18 @@ import pg from "pg"
 import * as path from "path"
 
 import eventEmitter from "./logging"
-import { ProvidersFactory } from "./ProvidersFactory"
+import {ProvidersFactory} from "./ProvidersFactory"
 
 export default {
 	migrator
 }
 export async function migrator() {
-	// For main db migration 
-	await accumulatedMigrationProcess(process.env.MAIN_DB_NAME as string, "mainMigrations", "schemaversion")
+	// For main db migration
+	await accumulatedMigrationProcess(
+		process.env.MAIN_DB_NAME as string,
+		"mainMigrations",
+		"schemaversion"
+	)
 
 	// For other APIs migration
 	const providersFactory = new ProvidersFactory()
@@ -26,7 +30,11 @@ export async function migrator() {
 	const apiMigrations = JSON.parse(rows)
 
 	for (let apiMigrationData of apiMigrations) {
-		await accumulatedMigrationProcess(apiMigrationData.slug as string, "repoMigrations", "unified_schemaversion")
+		await accumulatedMigrationProcess(
+			apiMigrationData.slug as string,
+			"repoMigrations",
+			"unified_schemaversion"
+		)
 	}
 
 	// await Promise.all(
@@ -34,7 +42,11 @@ export async function migrator() {
 	// )
 }
 
-async function accumulatedMigrationProcess(slug: string, migrationPath: string, schemaTable: string) {
+async function accumulatedMigrationProcess(
+	slug: string,
+	migrationPath: string,
+	schemaTable: string
+) {
 	// create client
 	const client = new pg.Client({
 		host: process.env.DB_HOST as string,
@@ -43,17 +55,24 @@ async function accumulatedMigrationProcess(slug: string, migrationPath: string, 
 		user: process.env.DB_USER as string,
 		password: process.env.DB_PASSWORD as string
 	})
-	
+
 	try {
 		await client.connect()
 	} catch (err) {
-		eventEmitter.emit("logging", `Database connection failed for - ${slug}`, err)
+		eventEmitter.emit(
+			"logging",
+			`Database connection failed for - ${slug}`,
+			err
+		)
 		process.exit()
 	}
 
 	// Create postgrator instance
 	const postgrator = new Postgrator({
-		migrationPattern: path.resolve(__dirname, `../../migrations/${migrationPath}/*`),
+		migrationPattern: path.resolve(
+			__dirname,
+			`../../migrations/${migrationPath}/*`
+		),
 		driver: "pg",
 		database: slug,
 		schemaTable: schemaTable,
@@ -79,7 +98,10 @@ async function accumulatedMigrationProcess(slug: string, migrationPath: string, 
 		await postgrator.migrate()
 		eventEmitter.emit("logging", `Migration function Ended - ${slug}.`)
 	} catch (err: any) {
-		eventEmitter.emit("logging", `Migration function failed - ${slug}.\n${err.message}`)
+		eventEmitter.emit(
+			"logging",
+			`Migration function failed - ${slug}.\n${err.message}`
+		)
 		process.exit()
 	}
 

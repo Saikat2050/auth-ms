@@ -6,7 +6,7 @@ const Ajv = require("ajv")
 const schemas = require("../../schema/cache.json")
 import publicApi from "../schemas/publicRoutes.json"
 import reservedApi from "../schemas/reservedRoutes.json"
-import { ProvidersFactory } from "../libs/ProvidersFactory"
+import {ProvidersFactory} from "../libs/ProvidersFactory"
 
 const ajv = new Ajv()
 
@@ -105,8 +105,9 @@ class Validator {
 
 			if (!userDetails) {
 				const providersFactory = new ProvidersFactory()
-				const {query, release} = await providersFactory.transaction(slug)
-				
+				const {query, release} =
+					await providersFactory.transaction(slug)
+
 				const {rows} = await query(`
 					SELECT *
 					FROM "users" AS usr
@@ -155,9 +156,7 @@ class Validator {
 		const reqMethod: string = req.method
 		let isPermissionRequired: boolean = false
 
-		if (
-			(roleId || "").toString().trim() !== ""
-		) {
+		if ((roleId || "").toString().trim() !== "") {
 			roleId = Number(roleId)
 		}
 
@@ -192,7 +191,7 @@ class Validator {
 		if (!roleDetails) {
 			const providersFactory = new ProvidersFactory()
 			const {query, release} = await providersFactory.transaction(slug)
-			
+
 			const {rows} = await query(`
 				SELECT *
 				FROM "roles" AS rlo
@@ -216,11 +215,7 @@ class Validator {
 		roleDetails = JSON.stringify(roleDetails, null, 2)
 		roleDetails = JSON.parse(roleDetails)
 
-		if (
-			!requiredSlug ||
-			!roleId ||
-			!roleDetails
-		) {
+		if (!requiredSlug || !roleId || !roleDetails) {
 			return next({
 				statusCode: 403,
 				message: "Forbidden request"

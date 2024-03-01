@@ -1,16 +1,16 @@
-import { NextFunction, Request, Response } from "express"
+import {NextFunction, Request, Response} from "express"
 
-import { Headers } from "../types/common"
-import {
-	CreateRolePayload,
-	UpdateRolePayload
-} from "../types/roles"
+import {Headers} from "../types/common"
+import {CreateRolePayload, UpdateRolePayload} from "../types/roles"
 
 import CommonModel from "../models/CommonModel"
 
-import { ApiResponse } from "../libs/ApiResponse"
+import {ApiResponse} from "../libs/ApiResponse"
 import eventEmitter from "../libs/logging"
-import { default as RoleService, default as roleService } from "../services/RoleService"
+import {
+	default as RoleService,
+	default as roleService
+} from "../services/RoleService"
 
 class RoleController {
 	private roleModel
@@ -27,20 +27,20 @@ class RoleController {
 
 	public async create(req: Request, res: Response, next: NextFunction) {
 		const response = new ApiResponse(res)
-		const { userId }: Headers = req.headers
+		const {userId}: Headers = req.headers
 		try {
 			await response.accumulatedAPITransactionBegin()
-		  const data: CreateRolePayload = await roleService.create(
-			req.body,
-			userId,
-		  )
-	
-		  // return response
+			const data: CreateRolePayload = await roleService.create(
+				req.body,
+				userId
+			)
+
+			// return response
 			await response.accumulatedAPITransactionSucceed()
-		  return response.successResponse({
-			message: `Role created successfully.`,
-			data
-		  })
+			return response.successResponse({
+				message: `Role created successfully.`,
+				data
+			})
 		} catch (error) {
 			await response.accumulatedAPITransactionFailed()
 			eventEmitter.emit("logging", error?.toString())
@@ -53,13 +53,13 @@ class RoleController {
 
 		try {
 			const {total, meta, data} = await roleService.list(req.body)
-  
+
 			// result return
 			return response.successResponse({
-			  message: `Role/s list.`,
-			  total,
-			  meta,
-			  data,
+				message: `Role/s list.`,
+				total,
+				meta,
+				data
 			})
 		} catch (error) {
 			eventEmitter.emit("logging", error?.toString())
@@ -73,42 +73,42 @@ class RoleController {
 		try {
 			await response.accumulatedAPITransactionBegin()
 			const data: UpdateRolePayload = await roleService.update(
-			  req.body,
-			  userId,
+				req.body,
+				userId
 			)
-	  
+
 			// return response
 			await response.accumulatedAPITransactionSucceed()
 			return response.successResponse({
-			  message: `Role updated successfully.`,
-			  data,
+				message: `Role updated successfully.`,
+				data
 			})
-		  } catch (error) {
+		} catch (error) {
 			await response.accumulatedAPITransactionFailed()
 			eventEmitter.emit("logging", error?.toString())
 			next(error)
-		  }
+		}
 	}
 
 	public async delete(req: Request, res: Response, next: NextFunction) {
 		const response = new ApiResponse(res)
 		const {userId}: Headers = req.headers
 		try {
-			const { userId }: Headers = req.headers
+			const {userId}: Headers = req.headers
 			await response.accumulatedAPITransactionBegin()
-	  
+
 			await RoleService.delete(req.body, userId)
-	  
+
 			await response.accumulatedAPITransactionSucceed()
 			return response.successResponse({
-			  success: true,
-			  message: `Role/s deleted successfully.`,
+				success: true,
+				message: `Role/s deleted successfully.`
 			})
-		  } catch (error) {
+		} catch (error) {
 			await response.accumulatedAPITransactionFailed()
 			eventEmitter.emit("logging", error?.toString())
 			next(error)
-		  }
+		}
 	}
 }
 

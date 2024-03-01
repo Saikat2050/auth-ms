@@ -12,6 +12,5 @@ export class ConfigRouter {
 			.post("/list", ConfigController.list)
 			.post("/update", ConfigController.update)
 			.post("/delete", ConfigController.delete)
-			
 	}
 }

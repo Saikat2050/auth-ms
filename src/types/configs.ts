@@ -3,9 +3,9 @@ import {Range, OrderDir, Manipulator, Timestamp} from "./common"
 export type ConfigTableData = {
 	configId: number
 	title: string
-    description: string
-    slug: string
-    config: string
+	description: string
+	slug: string
+	config: string
 	status: boolean
 } & Manipulator &
 	Timestamp
@@ -13,16 +13,16 @@ export type ConfigTableData = {
 export type ConfigDetails = {
 	configId: number
 	title: string
-    description: string
-    slug: string
-    config: string
+	description: string
+	slug: string
+	config: string
 }
 
 type CreateConfigSchema = {
 	title: string
-    description?: string
-    slug?: string
-    config: string
+	description?: string
+	slug?: string
+	config: string
 }
 
 export type CreateConfigPayload = CreateConfigSchema[] | CreateConfigSchema
@@ -46,9 +46,9 @@ export type ListConfigPayload = {
 export type UpdateConfigPayload = {
 	configId: number
 	title?: string
-    description?: string
-    slug?: string
-    config?: string
+	description?: string
+	slug?: string
+	config?: string
 }
 
 export type DeleteConfigPayload = {

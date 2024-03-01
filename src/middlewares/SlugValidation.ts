@@ -1,7 +1,6 @@
 import {Request, Response, NextFunction} from "express"
 import eventEmitter from "../libs/logging"
-import { ProvidersFactory } from "../libs/ProvidersFactory"
-
+import {ProvidersFactory} from "../libs/ProvidersFactory"
 
 class SlugValidation {
 	constructor() {}
@@ -31,7 +30,7 @@ class SlugValidation {
 			if (!serverConfig) {
 				const providersFactory = new ProvidersFactory()
 				const {query, release} = await providersFactory.transaction()
-				
+
 				const {rows} = await query(`
 					SELECT *
 					FROM "configs" AS cfg
@@ -48,13 +47,15 @@ class SlugValidation {
 					})
 				} else {
 					const configData =
-					typeof rows[0] === "string"
+						typeof rows[0] === "string"
 							? JSON.parse(rows[0])
 							: rows[0]
 
 					await client.hSet(`api_server_config_${slug}`, configData)
 
-					serverConfig = await client.hGetAll(`api_server_config_${slug}`)
+					serverConfig = await client.hGetAll(
+						`api_server_config_${slug}`
+					)
 				}
 			}
 

@@ -12,7 +12,9 @@ export class ProvidersFactory {
 		try {
 			const redis = global.universalRedisClient
 			const redisClient = await redis.connectRedisClient()
-			let dbConfig = await redisClient.hGetAll(`providers_factory_for_${dbName}`)
+			let dbConfig = await redisClient.hGetAll(
+				`providers_factory_for_${dbName}`
+			)
 
 			// check for server configuration
 			let dbConfigArr = Object.keys(dbConfig)
@@ -23,12 +25,18 @@ export class ProvidersFactory {
 			if (!dbConfig) {
 				// check if dbName does not exist then create new database
 				if (!ProvidersFactory.connectionPG[dbName]) {
-					ProvidersFactory.connectionPG[dbName] = this.createPG(dbName)
+					ProvidersFactory.connectionPG[dbName] =
+						this.createPG(dbName)
 				}
 
-				await redisClient.hSet(`providers_factory_for_${dbName}`, ProvidersFactory.connectionPG[dbName])
+				await redisClient.hSet(
+					`providers_factory_for_${dbName}`,
+					ProvidersFactory.connectionPG[dbName]
+				)
 
-				dbConfig = await redisClient.hGetAll(`providers_factory_for_${dbName}`)
+				dbConfig = await redisClient.hGetAll(
+					`providers_factory_for_${dbName}`
+				)
 			}
 			dbConfig = JSON.stringify(dbConfig, null, 2)
 			dbConfig = JSON.parse(dbConfig)

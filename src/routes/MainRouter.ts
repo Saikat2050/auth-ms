@@ -1,9 +1,9 @@
 import express from "express"
 
 import {
-	AuthRouter, 
-	ConfigRouter, 
-	NotificationServiceRouter, 
+	AuthRouter,
+	ConfigRouter,
+	NotificationServiceRouter,
 	RoleRouter,
 	UserRouter
 } from "."

@@ -12,6 +12,5 @@ export class RoleRouter {
 			.post("/list", RoleController.list)
 			.post("/update", RoleController.update)
 			.post("/delete", RoleController.delete)
-			
 	}
 }

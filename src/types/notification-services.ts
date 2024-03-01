@@ -1,19 +1,14 @@
-import {
-	Range,
-	OrderDir,
-	Manipulator,
-	Timestamp,
-} from "./common"
+import {Range, OrderDir, Manipulator, Timestamp} from "./common"
 
 type Configuration = {
-to: string[]
-cc?: string[]
-bcc?: string[] 
-subject: string
-body: string
-from: string
-publicKey: string
-privateKey: string
+	to: string[]
+	cc?: string[]
+	bcc?: string[]
+	subject: string
+	body: string
+	from: string
+	publicKey: string
+	privateKey: string
 }
 
 export type NotificationServiceTableData = {
@@ -23,14 +18,14 @@ export type NotificationServiceTableData = {
 	host: string
 	port: string
 	encryption: string
-	configuration: Configuration 
+	configuration: Configuration
 	isActive: boolean
 	status: boolean
 } & Manipulator &
 	Timestamp
 
 export type NotificationServiceDetails = {
-	notificationServiceId: number	
+	notificationServiceId: number
 	service: string
 	serviceType: string
 	host: string
@@ -61,13 +56,15 @@ type CreateNotificationServiceApiSchema = {
 	isActive: boolean
 }
 
-export type CreateNotificationServiceApiPayload = CreateNotificationServiceApiSchema[] | CreateNotificationServiceApiSchema
+export type CreateNotificationServiceApiPayload =
+	| CreateNotificationServiceApiSchema[]
+	| CreateNotificationServiceApiSchema
 
 type FilterNotificationServicePayload = Partial<{
 	notificationServiceId?: number | number[]
 	service?: string
 	serviceType?: string
-	host?: string 
+	host?: string
 	port?: string
 	encryption?: string
 	isActive?: boolean

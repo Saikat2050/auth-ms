@@ -34,7 +34,9 @@ export default class CommonModel {
 	bulkCreate = async (inputData: any, createdBy?: number) => {
 		// try {
 		const providersFactory = new ProvidersFactory()
-		const {query, release} = await providersFactory.transaction(this.DB_NAME)
+		const {query, release} = await providersFactory.transaction(
+			this.DB_NAME
+		)
 		try {
 			// for admin users
 			if (!createdBy) {
@@ -66,12 +68,16 @@ export default class CommonModel {
 					const elements = Object.keys(inputData[i])
 					for (const el of elements) {
 						// if (!!isJSON(inputData[i][el])) {
-						inputData[i][el] = await helper.escapeJSONString(inputData[i][el])
+						inputData[i][el] = await helper.escapeJSONString(
+							inputData[i][el]
+						)
 						// }
 
 						// @ts-ignore
 						if (
-							(["boolean", "number"].indexOf(typeof inputData[i][el]) < 0 &&
+							(["boolean", "number"].indexOf(
+								typeof inputData[i][el]
+							) < 0 &&
 								!inputData[i][el]) ||
 							(typeof inputData[i][el] === "string" &&
 								inputData[i][el].trim() === "")
@@ -138,7 +144,9 @@ export default class CommonModel {
 	): Promise<any> => {
 		// try {
 		const providersFactory = new ProvidersFactory()
-		const {query, release} = await providersFactory.transaction(this.DB_NAME)
+		const {query, release} = await providersFactory.transaction(
+			this.DB_NAME
+		)
 
 		try {
 			/* start managing fields to be returned */
@@ -183,17 +191,18 @@ export default class CommonModel {
 					if (column === "createdAt") {
 						if (moment(filter[column]).isValid()) {
 							whereArr.push(
-								`"${column}"::date = '${moment(filter[column]).format(
-									"YYYY-MM-DD"
-								)}'`
+								`"${column}"::date = '${moment(
+									filter[column]
+								).format("YYYY-MM-DD")}'`
 							)
 						}
 					} else if (column === "search") {
 						const whereSearch: string[] = []
 						for (let el of this.SEARCH_COLUMN_NAME) {
-							const searchValue: string = await helper.stringCaseSkipping(
-								filter[column].toString().trim()
-							)
+							const searchValue: string =
+								await helper.stringCaseSkipping(
+									filter[column].toString().trim()
+								)
 							whereSearch.push(`"${el}" ILIKE '%${searchValue}%'`)
 						}
 						whereArr.push(`(${whereSearch.join(" OR ")})`)
@@ -204,13 +213,15 @@ export default class CommonModel {
 								break
 							case "object":
 								if (Array.isArray(filter[column])) {
-									const filterArr: string[] = await helper.escapeJSONString(
-										filter[column]
-									)
+									const filterArr: string[] =
+										await helper.escapeJSONString(
+											filter[column]
+										)
 
 									whereArr.push(
 										`"${column}" IN (${
-											typeof filter[column][0] === "string"
+											typeof filter[column][0] ===
+											"string"
 												? `'${filterArr.join("', '")}'`
 												: `${filterArr.join(", ")}`
 										})`
@@ -218,17 +229,23 @@ export default class CommonModel {
 								}
 								break
 							default:
-								const processedString: string = await helper.escapeJSONString(
-									filter[column]
-								)
+								const processedString: string =
+									await helper.escapeJSONString(
+										filter[column]
+									)
 
-								whereArr.push(`"${column}" = '${processedString}'`)
+								whereArr.push(
+									`"${column}" = '${processedString}'`
+								)
 						}
 					}
 				}
 			}
 
-			if (filterNotToBeIncluded && Object.keys(filterNotToBeIncluded).length) {
+			if (
+				filterNotToBeIncluded &&
+				Object.keys(filterNotToBeIncluded).length
+			) {
 				const columns = Object.keys(filterNotToBeIncluded)
 				for (let column of columns) {
 					if (
@@ -244,19 +261,28 @@ export default class CommonModel {
 							`"${column}"::date != '${filterNotToBeIncluded[column]}'`
 						)
 					} else {
-						switch (typeof filterNotToBeIncluded[column] as string) {
+						switch (
+							typeof filterNotToBeIncluded[column] as string
+						) {
 							case "number":
-								whereArr.push(`"${column}" != ${filterNotToBeIncluded[column]}`)
+								whereArr.push(
+									`"${column}" != ${filterNotToBeIncluded[column]}`
+								)
 								break
 							case "object":
-								if (Array.isArray(filterNotToBeIncluded[column])) {
-									const unfilteredArr: string[] = await helper.escapeJSONString(
-										filterNotToBeIncluded[column]
-									)
+								if (
+									Array.isArray(filterNotToBeIncluded[column])
+								) {
+									const unfilteredArr: string[] =
+										await helper.escapeJSONString(
+											filterNotToBeIncluded[column]
+										)
 
 									whereArr.push(
 										`"${column}" NOT IN (${
-											typeof filterNotToBeIncluded[column][0] === "string"
+											typeof filterNotToBeIncluded[
+												column
+											][0] === "string"
 												? `'${unfilteredArr.join("', '")}'`
 												: `${unfilteredArr.join(", ")}`
 										})`
@@ -264,11 +290,14 @@ export default class CommonModel {
 								}
 								break
 							default:
-								const processedString: string = await helper.escapeJSONString(
-									filterNotToBeIncluded[column]
-								)
+								const processedString: string =
+									await helper.escapeJSONString(
+										filterNotToBeIncluded[column]
+									)
 
-								whereArr.push(`"${column}" != '${processedString}'`)
+								whereArr.push(
+									`"${column}" != '${processedString}'`
+								)
 						}
 					}
 				}
@@ -338,10 +367,16 @@ export default class CommonModel {
 		// }
 	}
 
-	update = async (data: any, id: number, updatedBy?: number): Promise<any> => {
+	update = async (
+		data: any,
+		id: number,
+		updatedBy?: number
+	): Promise<any> => {
 		// try {
 		const providersFactory = new ProvidersFactory()
-		const {query, release} = await providersFactory.transaction(this.DB_NAME)
+		const {query, release} = await providersFactory.transaction(
+			this.DB_NAME
+		)
 
 		try {
 			// for admin users
@@ -373,7 +408,10 @@ export default class CommonModel {
 				if (data[column] === undefined) {
 					delete data[column]
 				} else {
-					if (typeof data[column] === "string" && data[column].trim() === "") {
+					if (
+						typeof data[column] === "string" &&
+						data[column].trim() === ""
+					) {
 						data[column] = null
 					}
 
@@ -385,8 +423,8 @@ export default class CommonModel {
 					// 		? `'${data[column]}'`
 					// 		: `'${await helper.stringCaseSkipping(data[column].trim())}'`
 					let value =
-						["number", "boolean"].indexOf(typeof data[column]) >= 0 ||
-						!data[column]
+						["number", "boolean"].indexOf(typeof data[column]) >=
+							0 || !data[column]
 							? data[column]
 							: `'${data[column]}'`
 					updateArr.push(`"${column}" = ${value}`)
@@ -427,7 +465,9 @@ export default class CommonModel {
 	): Promise<any> => {
 		// try {
 		const providersFactory = new ProvidersFactory()
-		const {query, release} = await providersFactory.transaction(this.DB_NAME)
+		const {query, release} = await providersFactory.transaction(
+			this.DB_NAME
+		)
 		try {
 			// for admin users
 			if (!deletedBy) {
@@ -474,7 +514,9 @@ export default class CommonModel {
 	): Promise<any> => {
 		// try{
 		const providersFactory = new ProvidersFactory()
-		const {query, release} = await providersFactory.transaction(this.DB_NAME)
+		const {query, release} = await providersFactory.transaction(
+			this.DB_NAME
+		)
 		try {
 			// for admin users
 			if (!deletedBy) {
@@ -546,7 +588,9 @@ export default class CommonModel {
 	): Promise<any> => {
 		// try {
 		const providersFactory = new ProvidersFactory()
-		const {query, release} = await providersFactory.transaction(this.DB_NAME)
+		const {query, release} = await providersFactory.transaction(
+			this.DB_NAME
+		)
 
 		try {
 			// for admin users
@@ -572,13 +616,16 @@ export default class CommonModel {
 				if (data[column] === undefined) {
 					delete data[column]
 				} else {
-					if (typeof data[column] === "string" && data[column].trim() === "") {
+					if (
+						typeof data[column] === "string" &&
+						data[column].trim() === ""
+					) {
 						data[column] = null
 					}
 
 					let value =
-						["number", "boolean"].indexOf(typeof data[column]) >= 0 ||
-						!data[column]
+						["number", "boolean"].indexOf(typeof data[column]) >=
+							0 || !data[column]
 							? data[column]
 							: `'${data[column]}'`
 					updateArr.push(`"${column}" = ${value}`)

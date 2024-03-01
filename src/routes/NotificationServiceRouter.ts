@@ -12,6 +12,5 @@ export class NotificationServiceRouter {
 			.post("/list", NotificationServiceController.list)
 			.post("/update", NotificationServiceController.update)
 			.post("/delete", NotificationServiceController.delete)
-			
 	}
 }

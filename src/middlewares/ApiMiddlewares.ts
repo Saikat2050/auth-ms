@@ -38,7 +38,11 @@ class ApiMiddleware {
 	}
 
 	// 404 middleware
-	public async middleware404(req: Request, res: Response, next: NextFunction) {
+	public async middleware404(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
 		next({
 			message: `No router for Requested URL ${req.originalUrl}`,
 			statusCode: 404,
@@ -47,7 +51,11 @@ class ApiMiddleware {
 	}
 
 	// access control middleware
-	public async accessControl(req: Request, res: Response, next: NextFunction) {
+	public async accessControl(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
 		res.header("Access-Control-Allow-Origin", "*")
 		res.header(
 			"Access-Control-Allow-Headers",

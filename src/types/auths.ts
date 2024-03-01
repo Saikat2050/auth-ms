@@ -1,9 +1,4 @@
-import {
-	Range,
-	OrderDir,
-	Manipulator,
-	Timestamp
-} from "./common"
+import {Range, OrderDir, Manipulator, Timestamp} from "./common"
 import {RoleDetails} from "./roles"
 
 export type AuthTableData = {

@@ -17,11 +17,8 @@ import {
 	SignInPayload,
 	VerifyOtpByHash
 } from "../types/auths"
-import { RoleDetails } from "../types/roles"
-import {
-	UserDetails,
-	UserShortDetails
-} from "../types/users"
+import {RoleDetails} from "../types/roles"
+import {UserDetails, UserShortDetails} from "../types/users"
 
 import helper, {
 	decryptBycrypto,
@@ -29,13 +26,11 @@ import helper, {
 	regexEmail,
 	regexMobile
 } from "../helpers/helper"
-import { BadRequestException, UnauthorizedException } from "../libs/exceptions"
-import {
-	VerificationDetails
-} from "../types/verifications"
+import {BadRequestException, UnauthorizedException} from "../libs/exceptions"
+import {VerificationDetails} from "../types/verifications"
 
 class AuthService {
-    private authCredentialModel
+	private authCredentialModel
 	private roleModel
 	private verificationModel
 	private userModel
@@ -46,33 +41,38 @@ class AuthService {
 	private profileIdColumn: string = "profileId"
 	private roleIdColumn: string = "roleId"
 	private verificationIdColumn: string = "verificationId"
-    constructor() {
-        this.authCredentialModel = new CommonModel(
+	constructor() {
+		this.authCredentialModel = new CommonModel(
 			"authCredentials",
 			this.authCreddentialIdColumn,
 			[]
 		)
 		this.roleModel = new CommonModel("roles", this.roleIdColumn, [])
 		this.userModel = new CommonModel("users", this.userIdColumn, [])
-		this.profileModel = new CommonModel("profiles", this.profileIdColumn, [])
+		this.profileModel = new CommonModel(
+			"profiles",
+			this.profileIdColumn,
+			[]
+		)
 		this.verificationModel = new CommonModel(
 			"userVerifications",
 			this.verificationIdColumn,
 			[]
 		)
 
-        this.register = this.register.bind(this)
-        this.sendOtpWithHash = this.sendOtpWithHash.bind(this)
-        this.verifyingByHashOtp = this.verifyingByHashOtp.bind(this)
-        this.verifyOtpAndUpdatePassword = this.verifyOtpAndUpdatePassword.bind(this)
-        this.changePassword = this.changePassword.bind(this)
-        this.forgotPassword = this.forgotPassword.bind(this)
-        this.signIn = this.signIn.bind(this)
-        this.refreshToken = this.refreshToken.bind(this)
-    }
+		this.register = this.register.bind(this)
+		this.sendOtpWithHash = this.sendOtpWithHash.bind(this)
+		this.verifyingByHashOtp = this.verifyingByHashOtp.bind(this)
+		this.verifyOtpAndUpdatePassword =
+			this.verifyOtpAndUpdatePassword.bind(this)
+		this.changePassword = this.changePassword.bind(this)
+		this.forgotPassword = this.forgotPassword.bind(this)
+		this.signIn = this.signIn.bind(this)
+		this.refreshToken = this.refreshToken.bind(this)
+	}
 
-    public async register(inputData: RegisterAPIPayload, slug: string) {
-        try {
+	public async register(inputData: RegisterAPIPayload, slug: string) {
+		try {
 			await Promise.all([
 				this.authCredentialModel.useSlug(slug),
 				this.roleModel.useSlug(slug),
@@ -90,7 +90,7 @@ class AuthService {
 				)
 			}
 
-			// Email validation 
+			// Email validation
 			if (inputData.email) {
 				// check if email id is of valid format
 				if (!(await helper.regexEmail(inputData.email))) {
@@ -103,12 +103,11 @@ class AuthService {
 						userName: inputData.email,
 						status: true
 					})
-				
+
 				if (emailExist) {
 					throw new BadRequestException("User email already exists.")
 				}
 			}
-			
 
 			// Mobile validation
 			if (inputData.mobile) {
@@ -123,14 +122,18 @@ class AuthService {
 						userName: inputData.mobile,
 						status: true
 					})
-				
+
 				if (mobileExist) {
-					throw new BadRequestException("Mobile number already exists.")
+					throw new BadRequestException(
+						"Mobile number already exists."
+					)
 				}
 			}
 
 			// encrypt password
-			const isValidPassword: boolean = await helper.regexPassword(inputData.password)
+			const isValidPassword: boolean = await helper.regexPassword(
+				inputData.password
+			)
 			if (!isValidPassword) {
 				throw new BadRequestException(
 					"Password must be more then 8 char.",
@@ -152,23 +155,21 @@ class AuthService {
 			}
 
 			// create new user
-			const [data]: [UserShortDetails] = await this.userModel.bulkCreate(
-				[
-					{
-						roleId: inputData.roleId,
-						salutation: inputData.salutation,
-						firstName: inputData.firstName,
-						lastName: inputData.lastName,
-						gender: inputData.gender,
-						dob: inputData.dob,
-                        address: inputData.address,
-                        city: inputData.city,
-                        state: inputData.state,
-                        country: inputData.country,
-                        postalCode: inputData.postalCode
-					}
-				]
-			)
+			const [data]: [UserShortDetails] = await this.userModel.bulkCreate([
+				{
+					roleId: inputData.roleId,
+					salutation: inputData.salutation,
+					firstName: inputData.firstName,
+					lastName: inputData.lastName,
+					gender: inputData.gender,
+					dob: inputData.dob,
+					address: inputData.address,
+					city: inputData.city,
+					state: inputData.state,
+					country: inputData.country,
+					postalCode: inputData.postalCode
+				}
+			])
 
 			// hashing password
 			const salt: string = await bcrypt.genSalt(
@@ -180,26 +181,29 @@ class AuthService {
 			)
 
 			const authPayload: CreateAuthPayload[] = []
-			
+
 			if (inputData.email) {
 				authPayload.push({
-						userId: data.userId,
-						userName: inputData.email,
-						password: encryptedPassword
-					})
+					userId: data.userId,
+					userName: inputData.email,
+					password: encryptedPassword
+				})
 			}
 
 			if (inputData.mobile) {
 				authPayload.push({
-						userId: data.userId,
-						userName: inputData.mobile,
-						password: encryptedPassword
-					})
+					userId: data.userId,
+					userName: inputData.mobile,
+					password: encryptedPassword
+				})
 			}
-			
+
 			// create user auth credentials
 			const userAuthCreation: AuthDetails[] =
-				await this.authCredentialModel.bulkCreate(authPayload, data.userId )
+				await this.authCredentialModel.bulkCreate(
+					authPayload,
+					data.userId
+				)
 
 			// sent verification link on email
 			// encryption data
@@ -237,21 +241,21 @@ class AuthService {
 			const verificationDetails: CreateVerificationPayload[] = []
 			if (inputData.email) {
 				verificationDetails.push({
-						userId: data.userId,
-						value: inputData.email,
-						otp: encryptedOtp
-					})
+					userId: data.userId,
+					value: inputData.email,
+					otp: encryptedOtp
+				})
 			}
 
 			if (inputData.mobile) {
 				verificationDetails.push({
-						userId: data.userId,
-						value: inputData.mobile,
-						otp: encryptedOtp
-					})
+					userId: data.userId,
+					value: inputData.mobile,
+					otp: encryptedOtp
+				})
 			}
 
-			// Verification details 
+			// Verification details
 			await this.verificationModel.bulkCreate(
 				verificationDetails,
 				data.userId
@@ -264,15 +268,17 @@ class AuthService {
 				this.verificationModel.removeSlug()
 			])
 
-            return data		
-        } catch (err) {
-            throw err
-        }
-    }
+			return data
+		} catch (err) {
+			throw err
+		}
+	}
 
-	public async sendOtpWithHash(inputData: SendOtpByHashPayload, slug: string) {
+	public async sendOtpWithHash(
+		inputData: SendOtpByHashPayload,
+		slug: string
+	) {
 		try {
-
 			await Promise.all([
 				this.authCredentialModel.useSlug(slug),
 				this.roleModel.useSlug(slug),
@@ -295,10 +301,11 @@ class AuthService {
 			const {email, userId}: DecryptData = decryptData
 
 			// check if user exists
-			const [authDetails]: AuthDetails[] = await this.authCredentialModel.list({
-				userId,
-				userName: email
-			})
+			const [authDetails]: AuthDetails[] =
+				await this.authCredentialModel.list({
+					userId,
+					userName: email
+				})
 			if (!authDetails) {
 				throw new BadRequestException("Invalid user.")
 			}
@@ -353,7 +360,7 @@ class AuthService {
 					userId
 				)
 			}
-			
+
 			// send otp to email
 			// OTP to be sent by axios call
 			return true
@@ -374,13 +381,16 @@ class AuthService {
 			const decryptData: DecryptData = await decryptBycrypto(hash)
 			const {email, userId}: DecryptData = decryptData
 
-			const [[userData], [verificationData]]: [[UserShortDetails], [VerificationDetails]] = await Promise.all([
+			const [[userData], [verificationData]]: [
+				[UserShortDetails],
+				[VerificationDetails]
+			] = await Promise.all([
 				// check for valid hash
-			this.userModel.list({
-				secretHash: hash.toString().trim()
-			}),
-			// check if otp is valid
-			this.verificationModel.list({
+				this.userModel.list({
+					secretHash: hash.toString().trim()
+				}),
+				// check if otp is valid
+				this.verificationModel.list({
 					value: email,
 					isVerified: false,
 					status: true
@@ -441,7 +451,8 @@ class AuthService {
 			}
 
 			// encrypt password
-			const isValidPassword: boolean = await helper.regexPassword(password)
+			const isValidPassword: boolean =
+				await helper.regexPassword(password)
 			if (!isValidPassword) {
 				throw new BadRequestException(
 					"Password must be more then 8 char.",
@@ -457,7 +468,7 @@ class AuthService {
 
 			const decryptData: DecryptData = await decryptBycrypto(hash)
 			const {email, userId} = decryptData
-			
+
 			// check if user & verification exist
 			const [[authCredential], [verificationData]]: [
 				[AuthDetails],
@@ -493,7 +504,7 @@ class AuthService {
 					this.verificationModel.bulkCreate([
 						{
 							value: email,
-							isVerified: true,
+							isVerified: true
 						}
 					]),
 
@@ -572,46 +583,51 @@ class AuthService {
 	public async changePassword(inputData: ChangePasswordPayload) {
 		try {
 			let {email, previousPassword, newPassword}: ChangePasswordPayload =
-			inputData
+				inputData
 
-		// check for valid hash
-		const [authData]: AuthDetails[] = await this.authCredentialModel.list({
-			userName: email
-		})
+			// check for valid hash
+			const [authData]: AuthDetails[] =
+				await this.authCredentialModel.list({
+					userName: email
+				})
 
-		if (!authData) {
-			throw new BadRequestException("Invalid credentials.")
-		}
+			if (!authData) {
+				throw new BadRequestException("Invalid credentials.")
+			}
 
-		// encrypt password
-		const isValidPassword: boolean = await helper.regexPassword(newPassword)
-		if (!isValidPassword) {
-			throw new BadRequestException(
-				"Password must be more then 8 char!",
-				"validation_error"
+			// encrypt password
+			const isValidPassword: boolean =
+				await helper.regexPassword(newPassword)
+			if (!isValidPassword) {
+				throw new BadRequestException(
+					"Password must be more then 8 char!",
+					"validation_error"
+				)
+			}
+
+			// password comparison
+			if (!(await bcrypt.compare(previousPassword, authData?.password))) {
+				throw new UnauthorizedException("Invalid password.")
+			}
+
+			// new pass word encryption
+			const salt: string = await bcrypt.genSalt(
+				parseInt(process.env.SALT_ROUNDS as string)
 			)
-		}
+			const encryptedPassword = await bcrypt.hash(
+				newPassword.trim(),
+				salt
+			)
 
-		// password comparison
-		if (!(await bcrypt.compare(previousPassword, authData?.password))) {
-			throw new UnauthorizedException("Invalid password.")
-		}
+			// remove hash
+			await this.authCredentialModel.update(
+				{
+					password: encryptedPassword
+				},
+				authData.userId
+			)
 
-		// new pass word encryption
-		const salt: string = await bcrypt.genSalt(
-			parseInt(process.env.SALT_ROUNDS as string)
-		)
-		const encryptedPassword = await bcrypt.hash(newPassword.trim(), salt)
-
-		// remove hash
-		await this.authCredentialModel.update(
-			{
-				password: encryptedPassword
-			},
-			authData.userId
-		)
-
-		return true
+			return true
 		} catch (err) {
 			throw err
 		}
@@ -704,18 +720,18 @@ class AuthService {
 				})
 
 			if (!authCredential) {
-				throw new UnauthorizedException("Invalid credential. Please try again")
+				throw new UnauthorizedException(
+					"Invalid credential. Please try again"
+				)
 			}
 
 			// check if user is valid
 			const [verificationData]: VerificationDetails[] =
 				await this.verificationModel.list({
-				value: inputData.userName
-			})
+					value: inputData.userName
+				})
 
-			if (
-				!verificationData.isVerified
-			) {
+			if (!verificationData.isVerified) {
 				throw new UnauthorizedException("User is not verified")
 			}
 
@@ -724,7 +740,9 @@ class AuthService {
 				authCredential?.password
 			)
 			if (!isValidPassword) {
-				throw new UnauthorizedException("Invalid credential. Please try again")
+				throw new UnauthorizedException(
+					"Invalid credential. Please try again"
+				)
 			}
 
 			// update lastActiveOn
@@ -737,8 +755,8 @@ class AuthService {
 				userId: authCredential.userId
 			})
 
-			delete data?.secretHash			
-			
+			delete data?.secretHash
+
 			// generate token
 			const token: string = jwt.sign(
 				{

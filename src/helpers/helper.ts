@@ -16,27 +16,28 @@ export default {
 	createSlug
 }
 
-
 export async function generateOtp() {
 	// return Math.floor(1000 + Math.random() * 9000)
 	return await _.random(1000, 9999)
 }
 
-
 export async function regexEmail(email: string) {
-	return await regexValidation('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', email)
+	return await regexValidation(
+		"/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/",
+		email
+	)
 }
 
 export async function regexMobile(mobile: string) {
-	return await regexValidation('/^[6789]\d{9}$/', mobile)
+	return await regexValidation("/^[6789]d{9}$/", mobile)
 }
 
 export async function regexDob(dob: string) {
-	return await regexValidation('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', dob)
+	return await regexValidation("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", dob)
 }
 
 export async function regexPassword(password: string) {
-	return await regexValidation('/[A-Za-z0-9]{8}/', password)
+	return await regexValidation("/[A-Za-z0-9]{8}/", password)
 }
 
 export async function regexValidation(regex: string, value: string) {
@@ -101,7 +102,9 @@ export async function encryptionByCrypto(data: any) {
 		!encryptCred.secret_iv ||
 		!encryptCred.encryption_method
 	) {
-		throw new Error("secretKey, secretIV, and ecnryption Method are required")
+		throw new Error(
+			"secretKey, secretIV, and ecnryption Method are required"
+		)
 	}
 
 	// 	// Encrypt data
@@ -151,7 +154,8 @@ export function createSlug(datas: any[], fieldName: string, name: string) {
 
 		const duplicateSlugValue =
 			datas.find(
-				(el) => el[fieldName].toString().trim() === slug.toString().trim()
+				(el) =>
+					el[fieldName].toString().trim() === slug.toString().trim()
 			) ?? null
 
 		if (duplicateSlugValue) {
@@ -199,7 +203,9 @@ export async function escapeJSONString(inputData: any) {
 			const objectKeys = Object.keys(inputData)
 
 			for (let objectKey of objectKeys) {
-				inputData[objectKey] = await escapeJSONString(inputData[objectKey])
+				inputData[objectKey] = await escapeJSONString(
+					inputData[objectKey]
+				)
 			}
 		} else if (typeof inputData === "string" && isJSON(inputData)) {
 			const newObject = JSON.parse(inputData)
@@ -207,7 +213,9 @@ export async function escapeJSONString(inputData: any) {
 			const objectKeys = Object.keys(newObject)
 
 			for (let objectKey of objectKeys) {
-				newObject[objectKey] = await escapeJSONString(newObject[objectKey])
+				newObject[objectKey] = await escapeJSONString(
+					newObject[objectKey]
+				)
 			}
 
 			inputData = JSON.stringify(newObject)

@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express"
+import {NextFunction, Request, Response} from "express"
 
-import { ApiResponse } from "../libs/ApiResponse"
-import { BadRequestException } from "../libs/exceptions"
+import {ApiResponse} from "../libs/ApiResponse"
+import {BadRequestException} from "../libs/exceptions"
 import eventEmitter from "../libs/logging"
 import authService from "../services/AuthService"
 
@@ -10,7 +10,8 @@ class AuthController {
 		this.register = this.register.bind(this)
 		this.sendOtpWithHash = this.sendOtpWithHash.bind(this)
 		this.verifyingByHashOtp = this.verifyingByHashOtp.bind(this)
-		this.verifyOtpAndUpdatePassword = this.verifyOtpAndUpdatePassword.bind(this)
+		this.verifyOtpAndUpdatePassword =
+			this.verifyOtpAndUpdatePassword.bind(this)
 		this.changePassword = this.changePassword.bind(this)
 		this.forgotPassword = this.forgotPassword.bind(this)
 		this.signIn = this.signIn.bind(this)
@@ -21,8 +22,11 @@ class AuthController {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
-			const data = await authService.register(req.body, req.headers.slug as string)
+
+			const data = await authService.register(
+				req.body,
+				req.headers.slug as string
+			)
 
 			// return response
 			await response.accumulatedAPITransactionSucceed()
@@ -46,8 +50,11 @@ class AuthController {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
-			await authService.sendOtpWithHash(req.body, req.headers.slug as string)
+
+			await authService.sendOtpWithHash(
+				req.body,
+				req.headers.slug as string
+			)
 
 			await response.accumulatedAPITransactionSucceed()
 			return response.successResponse({
@@ -69,8 +76,11 @@ class AuthController {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
-			await authService.verifyingByHashOtp(req.body, req.headers.slug as string)
+
+			await authService.verifyingByHashOtp(
+				req.body,
+				req.headers.slug as string
+			)
 
 			await response.accumulatedAPITransactionSucceed()
 			return response.successResponse({
@@ -93,7 +103,7 @@ class AuthController {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
+
 			await authService.verifyOtpAndUpdatePassword(req.body)
 
 			await response.accumulatedAPITransactionSucceed()
@@ -110,11 +120,15 @@ class AuthController {
 	}
 
 	// change password
-	public async changePassword(req: Request, res: Response, next: NextFunction) {
+	public async changePassword(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
+
 			await authService.changePassword(req.body)
 
 			await response.accumulatedAPITransactionSucceed()
@@ -130,11 +144,15 @@ class AuthController {
 	}
 
 	// will send verification mail
-	public async forgotPassword(req: Request, res: Response, next: NextFunction) {
+	public async forgotPassword(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
+
 			await authService.forgotPassword(req.body)
 
 			await response.accumulatedAPITransactionSucceed()
@@ -155,7 +173,7 @@ class AuthController {
 		const response = new ApiResponse(res)
 		try {
 			await response.accumulatedAPITransactionBegin()
-			
+
 			const {data, token} = await authService.signIn(req.body)
 
 			await response.accumulatedAPITransactionSucceed()
@@ -183,7 +201,7 @@ class AuthController {
 			}
 
 			const token = await authService.refreshToken(accessToken)
-			
+
 			return response.successResponse({
 				message: `Refresh token generated successfully`,
 				token

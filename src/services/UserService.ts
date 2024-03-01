@@ -1,18 +1,18 @@
-import { isArray, uniq } from "lodash"
+import {isArray, uniq} from "lodash"
 
 import {
-    CreateUserPayload,
-    DeleteUserPayload,
-    ListUserPayload,
-    UserDetails,
-    UpdateUserPayload,
+	CreateUserPayload,
+	DeleteUserPayload,
+	ListUserPayload,
+	UserDetails,
+	UpdateUserPayload,
 	CreateUserApiPayload
 } from "../types/users"
 
 import CommonModel from "../models/CommonModel"
 
-import helper, { createSlug } from "../helpers/helper"
-import { BadRequestException } from "../libs/exceptions"
+import helper, {createSlug} from "../helpers/helper"
+import {BadRequestException} from "../libs/exceptions"
 
 class UserService {
 	private userModel
@@ -35,7 +35,7 @@ class UserService {
 	// 			await Promise.all([
 	// 				this.userModel.list({
 	// 					email: inputData.email,
-    //                     mobile: inputData.mobile
+	//                     mobile: inputData.mobile
 	// 				}),
 	// 				this.userModel.list({})
 	// 			])
@@ -62,7 +62,8 @@ class UserService {
 
 	public async list(inputData: ListUserPayload) {
 		try {
-			const {filter, range, sort}: ListUserPayload = await helper.listFunction(inputData)
+			const {filter, range, sort}: ListUserPayload =
+				await helper.listFunction(inputData)
 
 			const [data, [{total}]]: [UserDetails[], [{total: number}]] =
 				await Promise.all([
@@ -77,7 +78,7 @@ class UserService {
 						true
 					)
 				])
- 
+
 			// total pages
 			let pageSize: number = range?.pageSize ?? 100
 			pageSize = pageSize === 0 ? 100 : pageSize
@@ -118,7 +119,7 @@ class UserService {
 						.filter((el) => el)}.`
 				)
 			}
-		
+
 			const [data]: [UpdateUserPayload] = await this.userModel.update(
 				inputData,
 				inputData.userId,

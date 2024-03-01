@@ -1,9 +1,4 @@
-import {
-	Manipulator,
-	OrderDir,
-	Range,
-	Timestamp,
-} from "./common"
+import {Manipulator, OrderDir, Range, Timestamp} from "./common"
 
 export type VerificationTableData = {
 	verificationId: number

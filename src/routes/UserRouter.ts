@@ -12,6 +12,5 @@ export class UserRouter {
 			.post("/list", UserController.list)
 			.post("/update", UserController.update)
 			.post("/delete", UserController.delete)
-			
 	}
 }

@@ -24,16 +24,13 @@ export async function generateSchema() {
 
 	// Manipulate Cache Schemas
 	if (fs.existsSync(cacheBasePath)) {
-
 		const fileContent = fs.readFileSync(cacheBasePath).toString()
 		cacheBasedSchema = JSON.parse(fileContent)
 	} else {
-		
 		fs.mkdirSync(cacheBasePath, {recursive: true})
 		const fileContent = JSON.stringify(cacheBasedSchema, null, 2)
 		fs.writeFileSync(cacheBasePath, fileContent)
 	}
-
 
 	for (let i = 0; i < schemas.length; i++) {
 		const schemaPath: string = path.resolve(
@@ -41,12 +38,10 @@ export async function generateSchema() {
 		)
 		const hash: string = await generateCacheBasedSchema(schemaPath)
 
-
 		if (
 			cacheBasedSchema[`${schemas[i].basePath}`] &&
 			cacheBasedSchema[`${schemas[i].basePath}`].hash === hash
 		) {
-
 			eventEmitter.emit(
 				"logging",
 				`using hash ${hash} for schemaPath ${schemaPath}`
@@ -55,7 +50,6 @@ export async function generateSchema() {
 				cacheBasedSchema[`${schemas[i].basePath}`]
 			continue
 		}
-
 
 		eventEmitter.emit("logging", `started schemaPath ${schemaPath}`)
 
@@ -129,4 +123,3 @@ export async function generateSchema() {
 	fs.writeFileSync(schemaDirectory, content)
 	eventEmitter.emit("logging", "Schema generated")
 }
-

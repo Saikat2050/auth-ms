@@ -1,1 +1,967 @@
-{}
+{
+  "/v1/auth": {
+    "hash": "4bf769ecbf6e0cd44a50992efc661326d5c30bc2",
+    "schemas": {
+      "/v1/auth/register": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "number"
+          },
+          "salutation": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "firstName",
+          "password",
+          "roleId",
+          "salutation"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/auth/send-otp-hash": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "hash"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/auth/verify-otp-by-hash": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "hash",
+          "otp"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/auth/verify-otp-and-reset-password": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "number"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "hash",
+          "otp",
+          "password"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/auth/forgot-password": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "userName"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/auth/change-password": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "previousPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "newPassword",
+          "previousPassword"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/auth/sign-in": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "password",
+          "userName"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  },
+  "/v1/roles": {
+    "hash": "c76eae5202e5840459896c19033d6f61cad89e35",
+    "schemas": {
+      "/v1/roles/create": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "slug": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "title"
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "slug": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "title"
+              ]
+            }
+          }
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/roles/list": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "object",
+            "properties": {
+              "roleId": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "slug": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "search": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "range": {
+            "$ref": "#/definitions/Partial<{page:number;pageSize:number;}>"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "orderBy": {
+                "enum": [
+                  "roleId",
+                  "slug",
+                  "title"
+                ],
+                "type": "string"
+              },
+              "orderDir": {
+                "enum": [
+                  "ASC",
+                  "DESC",
+                  "asc",
+                  "desc"
+                ],
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "definitions": {
+          "Partial<{page:number;pageSize:number;}>": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "number"
+              },
+              "pageSize": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/roles/update": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "number"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "roleId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/roles/delete": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "roleId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  },
+  "/v1/configs": {
+    "hash": "79dae16b421b01b7157a029ea7b794814d3e8db0",
+    "schemas": {
+      "/v1/configs/create": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "slug": {
+                "type": "string"
+              },
+              "config": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "config",
+              "title"
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "config": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "config",
+                "title"
+              ]
+            }
+          }
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/configs/list": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "object",
+            "properties": {
+              "configId": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "slug": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "search": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "range": {
+            "$ref": "#/definitions/Partial<{page:number;pageSize:number;}>"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "orderBy": {
+                "enum": [
+                  "configId",
+                  "slug",
+                  "title"
+                ],
+                "type": "string"
+              },
+              "orderDir": {
+                "enum": [
+                  "ASC",
+                  "DESC",
+                  "asc",
+                  "desc"
+                ],
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "definitions": {
+          "Partial<{page:number;pageSize:number;}>": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "number"
+              },
+              "pageSize": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/configs/update": {
+        "type": "object",
+        "properties": {
+          "configId": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "config": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "configId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/configs/delete": {
+        "type": "object",
+        "properties": {
+          "configId": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "configId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  },
+  "/v1/users": {
+    "hash": "a8fca7e33eedfb9384e3088324db6a2dd73c06d8",
+    "schemas": {
+      "/v1/users/create": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/CreateUserApiSchema"
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/CreateUserApiSchema"
+            }
+          }
+        ],
+        "definitions": {
+          "CreateUserApiSchema": {
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+              "roleId": {
+                "type": "number"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "mobile": {
+                "type": "string"
+              },
+              "salutation": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "gender": {
+                "type": "string"
+              },
+              "dob": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "firstName",
+              "roleId"
+            ]
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/users/list": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "$ref": "#/definitions/Partial<{userId?:number|number[]|undefined;firstName?:string|undefined;lastName?:string|undefined;roleId?:number|number[]|undefined;dob?:string|undefined;gender?:string|undefined;search?:string|undefined;}>"
+          },
+          "range": {
+            "$ref": "#/definitions/Partial<{page:number;pageSize:number;}>"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "orderBy": {
+                "enum": [
+                  "address",
+                  "city",
+                  "country",
+                  "dob",
+                  "email",
+                  "firstName",
+                  "gender",
+                  "lastName",
+                  "mobile",
+                  "postalCode",
+                  "roleId",
+                  "salutation",
+                  "secretHash",
+                  "state",
+                  "status",
+                  "userId"
+                ],
+                "type": "string"
+              },
+              "orderDir": {
+                "enum": [
+                  "ASC",
+                  "DESC",
+                  "asc",
+                  "desc"
+                ],
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "definitions": {
+          "Partial<{userId?:number|number[]|undefined;firstName?:string|undefined;lastName?:string|undefined;roleId?:number|number[]|undefined;dob?:string|undefined;gender?:string|undefined;search?:string|undefined;}>": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "roleId": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "dob": {
+                "type": "string"
+              },
+              "gender": {
+                "type": "string"
+              },
+              "search": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "Partial<{page:number;pageSize:number;}>": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "number"
+              },
+              "pageSize": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/users/update": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "roleId": {
+            "type": "number"
+          },
+          "salutation": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/users/delete": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "userId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  },
+  "/v1/notification-services": {
+    "hash": "37d32a5a4005ad8e93d6274e7bf65c4e0ed76246",
+    "schemas": {
+      "/v1/notification-services/create": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "service": {
+                "type": "string"
+              },
+              "serviceType": {
+                "type": "string"
+              },
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "string"
+              },
+              "encryption": {
+                "type": "string"
+              },
+              "configuration": {
+                "type": "string"
+              },
+              "isActive": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "configuration",
+              "encryption",
+              "host",
+              "isActive",
+              "port",
+              "service",
+              "serviceType"
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "service": {
+                  "type": "string"
+                },
+                "serviceType": {
+                  "type": "string"
+                },
+                "host": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "string"
+                },
+                "encryption": {
+                  "type": "string"
+                },
+                "configuration": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "configuration",
+                "encryption",
+                "host",
+                "isActive",
+                "port",
+                "service",
+                "serviceType"
+              ]
+            }
+          }
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/notification-services/list": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "$ref": "#/definitions/Partial<{notificationServiceId?:number|number[]|undefined;service?:string|undefined;serviceType?:string|undefined;host?:string|undefined;port?:string|undefined;encryption?:string|undefined;isActive?:boolean|undefined;search?:string|undefined;}>"
+          },
+          "range": {
+            "$ref": "#/definitions/Partial<{page:number;pageSize:number;}>"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "orderBy": {
+                "enum": [
+                  "configuration",
+                  "encryption",
+                  "host",
+                  "isActive",
+                  "notificationServiceId",
+                  "port",
+                  "service",
+                  "serviceType",
+                  "status"
+                ],
+                "type": "string"
+              },
+              "orderDir": {
+                "enum": [
+                  "ASC",
+                  "DESC",
+                  "asc",
+                  "desc"
+                ],
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "definitions": {
+          "Partial<{notificationServiceId?:number|number[]|undefined;service?:string|undefined;serviceType?:string|undefined;host?:string|undefined;port?:string|undefined;encryption?:string|undefined;isActive?:boolean|undefined;search?:string|undefined;}>": {
+            "type": "object",
+            "properties": {
+              "notificationServiceId": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "service": {
+                "type": "string"
+              },
+              "serviceType": {
+                "type": "string"
+              },
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "string"
+              },
+              "encryption": {
+                "type": "string"
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "search": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "Partial<{page:number;pageSize:number;}>": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "number"
+              },
+              "pageSize": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/notification-services/update": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "notificationServiceId": {
+            "type": "number"
+          },
+          "service": {
+            "type": "string"
+          },
+          "serviceType": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "port": {
+            "type": "string"
+          },
+          "encryption": {
+            "type": "string"
+          },
+          "configuration": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "notificationServiceId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "/v1/notification-services/delete": {
+        "type": "object",
+        "properties": {
+          "notificationServiceId": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "notificationServiceId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  }
+}

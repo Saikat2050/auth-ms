@@ -28,6 +28,7 @@ class ConfigService {
 
   public async create(inputData: CreateConfigPayload, userId: number) {
     try {
+      //@ts-ignore accept array and non array inputs
       inputData = isArray(inputData) ? inputData : [inputData]
 
       const title: string[] = inputData

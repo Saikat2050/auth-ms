@@ -28,6 +28,7 @@ class RoleService {
 
 	public async create(inputData: CreateRolePayload, userId: number) {
 		try {
+			// @ts-ignore
 			inputData = isArray(inputData) ? inputData : [inputData]
             //@ts-ignore 
 			const title: string[] = inputData.map((el) => el.title).filter((el) => el)

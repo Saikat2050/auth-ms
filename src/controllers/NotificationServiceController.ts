@@ -7,6 +7,7 @@ import {
 	CreateNotificationServicePayload,
 	ListNotificationServicePayload,
 	UpdateNotificationServicePayload,
+	NotificationServiceDetails,
 	DeleteNotificationServicePayload
 } from "../types/notification-services"
 
@@ -16,7 +17,7 @@ import {BadRequestException, ForbiddenException} from "../libs/exceptions"
 import eventEmitter from "../libs/logging"
 import {ApiResponse} from "../libs/ApiResponse"
 import helper from "../helpers/helper"
-import NotificationService from "../Services/NotificationService"
+import NotificationService from "../services/NotificationService"
 
 class NotificationServiceController {
 	private notificationServiceModel
